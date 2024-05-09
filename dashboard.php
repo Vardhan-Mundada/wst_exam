@@ -1,6 +1,3 @@
-
-<?php include 'navbar.php'; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,20 +6,9 @@
     <title>Product Catalog</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Add styles for the product catalog */
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            padding:2rem;
             display: block;
-        }
-
-        .categories {
-            margin-bottom: 20px;
-        }
-
-        .categories h3 {
-            margin-bottom: 10px;
         }
 
         .categories select {
@@ -49,21 +35,12 @@
             height: auto;
         }
 
-        .product h3 {
-            margin-top: 0;
-        }
-
-        .product p {
-            margin: 5px 0;
-        }
 
         .addToCartBtn {
-            background-color: #4CAF50;
-            color: black;
+            background-color: #555555;
+            color: white;
             padding: 10px;
-            border: 1px solid black;
             border-radius: 5px;
-            cursor: pointer;
         }
 
         .cartItem {
@@ -80,28 +57,28 @@
 <body>
     <div class="container">
         <h2>Product Catalog</h2>
-
-        <!-- Add search form -->
+        <div style="display: flex; flex-direction: row; justify-content: space-around;">
         <form action="" method="GET">
             <input type="text" name="search" placeholder="Search products...">
             <button type="submit">Search</button>
         </form>
 
-        <!-- Categories Section -->
         <div class="categories">
             <h3>Categories</h3>
             <select onchange="location = this.value;">
                 <option value="?category=all">All</option>
                 <option value="?category=electronics">Electronics</option>
                 <option value="?category=clothing">Clothing</option>
-                <!-- Add more categories as needed -->
             </select>
         </div>
 
-        <!-- Products Section -->
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-around; padding-bottom:2rem;">
+        <button><a href="add_product_html.php">Add Products to inventory</a></button>
+        <a href="getCart.php"><button>View Cart</button></a>
+        </div>
         <div class="products">
     <?php
-    // Include database connection
     $servername = "127.0.0.1";
     $username = "root";
     $password = "";
@@ -110,22 +87,17 @@
 
     $conn = new mysqli($servername, $username, $password, $database, $port);
 
-    // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Retrieve search keyword if provided
     $search_keyword = isset($_GET['search']) ? $_GET['search'] : '';
-
-    // Query products based on search keyword
     if (!empty($search_keyword)) {
         $sql = "SELECT * FROM Products WHERE ProductName LIKE '%$search_keyword%'";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                // Display each product with an "Add to Cart" button
                 echo "<div class='product'>";
                 echo "<img src='" . $row['Image'] . "' alt='" . $row['ProductName'] . "'>";
                 echo "<h3>" . $row['ProductName'] . "</h3>";
@@ -133,9 +105,7 @@
                 echo "<p>Price: $" . $row['UnitPrice'] . "</p>";
                 echo "<p>Quantity: " . $row['Quantity'] . "</p>";
                 echo "<p>Category: " . $row['Category'] . "</p>";
-                echo "hii";
                 echo "<button class='addToCartBtn' onclick='addToCart(" . $row['ProductID'] . ")'>Add to Cart</button>";
-                
                 echo "</div>";
             }
         } else {
@@ -149,17 +119,7 @@
 
     </div>
 
-    <!-- Shopping cart modal -->
-    <div id="cartModal" class="modal">
-        <div id="cartItems">
-            <!-- Cart items will be dynamically loaded here -->
-        </div>
-        <!-- <button id="checkoutBtn">Checkout</button> -->
-    </div>
 
-    <a href="getCart.php"><button>View Cart</button></a>
-
-<!-- JavaScript for adding to cart -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function addToCart(ProductID) {
@@ -168,7 +128,7 @@
             method: 'POST',
             data: { ProductID: ProductID },
             success: function(response) {
-                alert(response); // Show success message or handle response as needed
+                alert(response);
             }
         });
     }

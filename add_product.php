@@ -1,45 +1,37 @@
 <?php
-// Connect to the database (replace with your database credentials)
 $servername = "127.0.0.1";
 $username = "root";
 $password = "";
-$database = "trial";
+$database = "exam";
 $port = 8111;
 
 $conn = new mysqli($servername, $username, $password, $database, $port);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Process form data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST["name"];
-    $description = $_POST["description"];
-    $price = $_POST["price"];
-    $category = $_POST["category"];
-    $availability = isset($_POST["availability"]) ? 1 : 0;
+    $ProductID= $_POST["ProductID"];
+    $ProductName = $_POST["ProductName"];
+    $Description = $_POST["Description"];
+    $UnitPrice = $_POST["UnitPrice"];
+    $Quantity = $_POST["Quantity"];
+    $Category = $_POST["Category"];
 
-    // Upload image file
     $targetDir = "uploads/";
-    if (!file_exists($targetDir)) {
-        mkdir($targetDir, 0777, true);
-    }
-    $targetFile = $targetDir . basename($_FILES["image"]["name"]);
-    move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
+    $targetFile = $targetDir . basename($_FILES["Image"]["name"]);
+    move_uploaded_file($_FILES["Image"]["tmp_name"], $targetFile);
 
-    // Insert product data into the database
-    $sql = "INSERT INTO product (name, description, price, category, availability, image) 
-            VALUES ('$name', '$description', '$price', '$category', '$availability', '$targetFile')";
+    $sql = "INSERT INTO products (ProductID, ProductName, Description, UnitPrice, Quantity, Category, Image) 
+            VALUES ('$ProductID', '$ProductName' , '$Description', '$UnitPrice', '$Quantity' ,'$Category', '$targetFile')";
 
     if ($conn->query($sql) === TRUE) {
         echo "Product added successfully";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: ";
     }
 }
 
-// Close database connection
 $conn->close();
 ?>

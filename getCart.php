@@ -1,16 +1,13 @@
 <?php
 session_start();
 
-// Check if AJAX request is received
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['productId']) && isset($_POST['action'])) {
-    include 'update_cart.php'; // Include update_cart.php to handle AJAX request
-    exit; // Exit after handling AJAX request
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ProductID']) && isset($_POST['action'])) {
+    include 'update_cart.php'; 
+    exit; 
 }
 
 
-// Check if cart session variable is set
 if (isset($_SESSION['cart'])) {
-    // Include database connection
     $servername = "127.0.0.1";
     $username = "root";
     $password = "";
@@ -19,19 +16,17 @@ if (isset($_SESSION['cart'])) {
 
     $conn = new mysqli($servername, $username, $password, $database, $port);
 
-    // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Fetch cart items from database based on product IDs in the cart
     $cartItems = [];
-    foreach ($_SESSION['cart'] as $productId => $quantity) { // Update loop to fetch quantity as well
+    foreach ($_SESSION['cart'] as $productId => $quantity) { 
         $sql = "SELECT * FROM Products WHERE ProductID = $productId";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $row['quantity'] = $quantity; // Add quantity to the row
+            $row['quantity'] = $quantity; 
             $cartItems[] = $row;
         }
     }
@@ -111,26 +106,24 @@ if (isset($_SESSION['cart'])) {
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Function to increment product count in cart
         function incrementProduct(productId) {
             $.ajax({
-                url: 'update_cart.php', // Corrected the URL to point to update_cart.php
+                url: 'update_cart.php', 
                 method: 'POST',
-                data: { productId: productId, action: 'increment' }, // Sending the action 'increment' to update_cart.php
+                data: { productId: productId, action: 'increment' }, 
                 success: function(response) {
-                    location.reload(); // Reload the page to update cart
+                    location.reload(); 
                 }
             });
         }
 
-        // Function to decrement product count in cart
         function decrementProduct(productId) {
             $.ajax({
-                url: 'update_cart.php', // Corrected the URL to point to update_cart.php
+                url: 'update_cart.php', 
                 method: 'POST',
-                data: { productId: productId, action: 'decrement' }, // Sending the action 'decrement' to update_cart.php
+                data: { productId: productId, action: 'decrement' }, 
                 success: function(response) {
-                    location.reload(); // Reload the page to update cart
+                    location.reload();
                 }
             });
         }
@@ -157,9 +150,7 @@ if (isset($_SESSION['cart'])) {
     <?php endif; ?>
 
     <a href="checkout.php" class="checkoutBtn">Checkout</a>
-    <a href="product_catalog.php"><button>Continue Shopping</button></a>
 
-    <!-- JavaScript for removing from cart -->
     <script>
         function removeFromCart(productId) {
             $.ajax({
@@ -167,8 +158,8 @@ if (isset($_SESSION['cart'])) {
                 method: 'POST',
                 data: { productId: productId },
                 success: function(response) {
-                    alert(response); // Show success message or handle response as needed
-                    location.reload(); // Reload the page to update cart items
+                    alert(response); 
+                    location.reload();
                 }
             });
         }

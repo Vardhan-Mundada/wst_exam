@@ -1,13 +1,3 @@
-<?php
-// Start session
-session_start();
-
-// Check if user is not logged in, redirect to login page
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("Location: login.html");
-    exit;
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,20 +11,21 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <div class="container">
         <h2>Add Product</h2>
         <form action="add_product.php" method="post" enctype="multipart/form-data">
-            <input type="text" name="name" placeholder="Product Name" required>
-            <textarea name="description" placeholder="Product Description" required></textarea>
-            <input type="number" name="price" placeholder="Price" step="0.01" required>
-            <select name="category" required>
+            <input type="number" name="ProductID" placeholder="Price" step="0.01" required>
+            <input type="text" name="ProductName" placeholder="Product Name" required>
+            <textarea name="Description" placeholder="Product Description" required></textarea>
+            <input type="number" name="UnitPrice" placeholder="Price" step="0.01" required>
+            <input type="file" name="Image" accept="image/*" required>
+            <input type="number" name="Quantity" placeholder="Price" step="0.01" required>
+            <select name="Category" required>
                 <option value="" disabled selected>Select Category</option>
                 <option value="electronics">Electronics</option>
                 <option value="clothing">Clothing</option>
-                <!-- Add more categories as needed -->
             </select>
-            <input type="checkbox" name="availability" id="availability" checked>
-            <label for="availability">Available</label>
-            <input type="file" name="image" accept="image/*" required>
             <button type="submit">Add Product</button>
         </form>
     </div>
 </body>
 </html>
+
+
