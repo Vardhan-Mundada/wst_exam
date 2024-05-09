@@ -6,6 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Dashboard</h1>
+        <!-- View Cart items-->
+        <!-- remove iterm, increment, decretment -->
+        <!-- cart total -->
+        <!-- place order (payment gateway) -->
+        <!-- orders database -->
 </body>
 </html>
