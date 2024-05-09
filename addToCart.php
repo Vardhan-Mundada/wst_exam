@@ -10,12 +10,15 @@ if (isset($_POST['ProductID'])) {
         $_SESSION['cart'] = [];
     }
 
-    // Add productId to cart
-    if (!in_array($productId, $_SESSION['cart'])) {
-        $_SESSION['cart'][] = $productId;
-        echo "Product added to cart successfully.";
+    // Check if product already exists in cart
+    if (array_key_exists($productId, $_SESSION['cart'])) {
+        // If product exists, increase its quantity
+        $_SESSION['cart'][$productId] += 1;
+        echo "Quantity increased for the product in cart.";
     } else {
-        echo "Product already exists in cart.";
+        // Add productId to cart with quantity 1
+        $_SESSION['cart'][$productId] = 1;
+        echo "Product added to cart successfully.";
     }
 } else {
     echo "Product ID not provided.";

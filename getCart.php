@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 // Check if AJAX request is received
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['productId']) && isset($_POST['action'])) {
     include 'update_cart.php'; // Include update_cart.php to handle AJAX request
@@ -15,7 +14,7 @@ if (isset($_SESSION['cart'])) {
     $servername = "127.0.0.1";
     $username = "root";
     $password = "";
-    $database = "trial";
+    $database = "exam";
     $port = 8111;
 
     $conn = new mysqli($servername, $username, $password, $database, $port);
@@ -28,7 +27,7 @@ if (isset($_SESSION['cart'])) {
     // Fetch cart items from database based on product IDs in the cart
     $cartItems = [];
     foreach ($_SESSION['cart'] as $productId => $quantity) { // Update loop to fetch quantity as well
-        $sql = "SELECT * FROM product WHERE id = $productId";
+        $sql = "SELECT * FROM Products WHERE ProductID = $productId";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -49,7 +48,6 @@ if (isset($_SESSION['cart'])) {
     <title>View Cart</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-         <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -111,15 +109,14 @@ if (isset($_SESSION['cart'])) {
             text-decoration: none;
         }
     </style>
-    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // Function to increment product count in cart
         function incrementProduct(productId) {
             $.ajax({
-                url: 'getCart.php', // Use the same page to handle AJAX request
+                url: 'update_cart.php', // Corrected the URL to point to update_cart.php
                 method: 'POST',
-                data: { productId: productId, action: 'increment' },
+                data: { productId: productId, action: 'increment' }, // Sending the action 'increment' to update_cart.php
                 success: function(response) {
                     location.reload(); // Reload the page to update cart
                 }
@@ -129,9 +126,9 @@ if (isset($_SESSION['cart'])) {
         // Function to decrement product count in cart
         function decrementProduct(productId) {
             $.ajax({
-                url: 'getCart.php', // Use the same page to handle AJAX request
+                url: 'update_cart.php', // Corrected the URL to point to update_cart.php
                 method: 'POST',
-                data: { productId: productId, action: 'decrement' },
+                data: { productId: productId, action: 'decrement' }, // Sending the action 'decrement' to update_cart.php
                 success: function(response) {
                     location.reload(); // Reload the page to update cart
                 }
@@ -145,13 +142,13 @@ if (isset($_SESSION['cart'])) {
         <div class="cartItems">
             <?php foreach ($cartItems as $item) : ?>
                 <div class="cartItem">
-                    <img src="<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>">
-                    <h3><?php echo $item['name']; ?></h3>
-                    <p>Price: $<?php echo $item['price']; ?></p>
-                    <button onclick="removeFromCart(<?php echo $item['id']; ?>)">Remove from Cart</button>
-                    <button onclick="incrementProduct(<?php echo $item['id']; ?>)">+</button>
-                    <button onclick="decrementProduct(<?php echo $item['id']; ?>)">-</button>
-                    <p>Quantity: <?php echo $item['quantity']; ?></p>s
+                    <img src="<?php echo $item['Image']; ?>" alt="<?php echo $item['ProductName']; ?>">
+                    <h3><?php echo $item['ProductName']; ?></h3>
+                    <p>Price: $<?php echo $item['UnitPrice']; ?></p>
+                    <button onclick="removeFromCart(<?php echo $item['ProductID']; ?>)">Remove from Cart</button>
+                    <button onclick="incrementProduct(<?php echo $item['ProductID']; ?>)">+</button>
+                    <button onclick="decrementProduct(<?php echo $item['ProductID']; ?>)">-</button>
+                    <p>Quantity: <?php echo $item['quantity']; ?></p>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -163,7 +160,6 @@ if (isset($_SESSION['cart'])) {
     <a href="product_catalog.php"><button>Continue Shopping</button></a>
 
     <!-- JavaScript for removing from cart -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function removeFromCart(productId) {
             $.ajax({
