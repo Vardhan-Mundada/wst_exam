@@ -2,8 +2,8 @@
 session_start();
 
 // Check if productId is provided
-if (isset($_POST['productId'])) {
-    $productId = $_POST['productId'];
+if (isset($_POST['ProductID'])) {
+    $productId = $_POST['ProductID'];
 
     // Check if cart session variable is set, initialize if not
     if (!isset($_SESSION['cart'])) {

@@ -162,11 +162,11 @@
 <!-- JavaScript for adding to cart -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    function addToCart(productId) {
+    function addToCart(ProductID) {
         $.ajax({
             url: 'addToCart.php',
             method: 'POST',
-            data: { productId: productId },
+            data: { ProductID: ProductID },
             success: function(response) {
                 alert(response); // Show success message or handle response as needed
             }

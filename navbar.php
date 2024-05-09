@@ -1,19 +1,3 @@
-<?php
-// Check if session is not already active
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    // Check if "username" session variable is set
-    if (isset($_SESSION["email"])) {
-        $username = $_SESSION["email"];
-    }
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,17 +68,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 <li><a href="#">Option 3</a></li>
                 <li><a href="#">Option 4</a></li>
             </ul>
-            <div class="user-info">
-                <?php
-                // Display user info if logged in
-                if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-                    echo "<div>Welcome, $username</div>";
-                    echo "<a href='logout.php'>Logout</a>";
-                } else {
-                    echo "<a href='login.html'>Login</a>";
-                }
-                ?>
-            </div>
         </div>
     </nav>
 </body>
